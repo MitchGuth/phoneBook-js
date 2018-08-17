@@ -1,15 +1,15 @@
-var fs = require('fs');
-var readline = require('readline');
+const fs = require('fs');
+const readline = require('readline');
 
-var rl = readline.createInterface({
+let rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
 
-var phonebook;
+let phonebook;
 
-var readFile = function(file){
-    fs.readFile(file, function(error, data){
+let readFile = (file) =>{
+    fs.readFile(file,(error, data) => {
         if (error){
             console.log(error);
         }
@@ -22,8 +22,8 @@ var readFile = function(file){
 
 readFile('phonebook.json');
 
-var overwriteFile = function(fileName, callback){
-    fs.writeFile(fileName, JSON.stringify(phonebook), function(error){
+let overwriteFile = (fileName, callback) => {
+    fs.writeFile(fileName, JSON.stringify(phonebook), (error) => {
         if (error){
             console.log(error);
         }
@@ -33,7 +33,7 @@ var overwriteFile = function(fileName, callback){
     })
 }
 
-var printPhonebook = function(){
+let printPhonebook = () => {
     console.log('');
     for (key in phonebook){
         console.log(key, phonebook[key]);
@@ -41,17 +41,17 @@ var printPhonebook = function(){
     };
 };
 
-var listAll = function(callback){
+let listAll = (callback) => {
     printPhonebook();
     callback();
 }
 
-var createEntry = function(callback){
-    rl.question("What is the entry's name: ", function(entryName){
-        var newEntry = entryName;
-        rl.question("What is the entry's phone number: ", function(entryNumber){
+let createEntry = (callback) => {
+    rl.question("What is the entry's name: ", (entryName) => {
+        let newEntry = entryName;
+        rl.question("What is the entry's phone number: ", (entryNumber) => {
             phonebook[newEntry] = entryNumber;
-            overwriteFile("phonebook.json", function(){
+            overwriteFile("phonebook.json", () => {
                 printPhonebook();
                 callback();
             });
@@ -59,24 +59,24 @@ var createEntry = function(callback){
     });
 };
 
-var removeEntry = function(callback){
-    rl.question("Who would you like to remove from the phonebook? ", function(victim){
+let removeEntry = (callback) => {
+    rl.question("Who would you like to remove from the phonebook? ", (victim) => {
         delete phonebook[victim];
         console.log(phonebook);
-        overwriteFile("phonebook.json", function(){
+        overwriteFile("phonebook.json", () => {
             printPhonebook();
             callback();
         });
     })
 };
 
-var quit = function(callback){
+let quit = (callback) => {
     console.log("Have a great day!")
     rl.close();
 }
 
-var mainMenu = function(){
-    var items = [
+let mainMenu = () => {
+    let items = [
     "Phone Book",
     "========================",
     "1. Look up an entry", 
@@ -85,13 +85,13 @@ var mainMenu = function(){
     "4. List all entries", 
     "5. Quit", 
 ]
-    items.forEach(function(item){
+    items.forEach((item) => {
         console.log(item);
     });
     phonebookFunction();
 };
 
-var options = {
+let options = {
     "1": listAll,
     "2": createEntry,
     "3": removeEntry,
@@ -99,8 +99,8 @@ var options = {
     "5": quit
 };
 
-var phonebookFunction = function(){
-    rl.question('What would you like to do? ', function(answer){
+let phonebookFunction = () => {
+    rl.question('What would you like to do? ', (answer) => {
         options[answer](mainMenu);
     });
 };
